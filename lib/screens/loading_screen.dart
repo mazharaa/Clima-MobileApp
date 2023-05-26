@@ -1,7 +1,8 @@
 import 'package:clima/services/location.dart';
+import 'package:clima/services/networking.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+
+const apiKey = 'c672bd1a234c427255af727c3375e9bc';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -11,36 +12,37 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  var lat;
+  var lon;
+
   @override
   void initState() {
     super.initState();
     getLocation();
-    getData();
   }
 
   void getLocation() async {
     Location location = Location();
     await location.getCurrentLocation();
-    print(location.latitude);
-    print(location.longitude);
-  }
+    lat = location.latitude;
+    lon = location.longitude;
+    print(lat);
+    print(lon);
 
-  void getData() async {
-    http.Response response = await http.get(
-      Uri.parse('https://samples.openweathermap.org/data/2.5/weather?lat=35&lon='
-        '139&appid=b6907d289e10d714a6e88b30761fae22')
+    Networking networking = Networking(
+      'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&'
+          'appid=$apiKey'
     );
-    if(response.statusCode == 200) {
-      String data = response.body;
-      var temp = jsonDecode(data)['main']['temp'];
-      var id = jsonDecode(data)['weather'][0]['id'];
-      var name = jsonDecode(data)['name'];
-      print('temp = $temp');
-      print('id = $id');
-      print('name = $name');
-    } else {
-      print(response.statusCode);
-    }
+
+    var weatherData = await networking.getData();
+
+    double temp = weatherData['main']['temp'];
+    int id = weatherData['weather'][0]['id'];
+    String city = weatherData['name'];
+
+    print('temp = $temp');
+    print('id = $id');
+    print('city = $city');
   }
 
   @override
@@ -57,3 +59,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     );
   }
 }
+
+// double temp = jsonDecode(data)['main']['temp'];
+// int id = jsonDecode(data)['weather'][0]['id'];
+// String name = jsonDecode(data)['name'];
