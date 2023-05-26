@@ -29,7 +29,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
     print(lat);
     print(lon);
 
-    Networking networking = Networking(
+    NetworkHelper networking = NetworkHelper(
       'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&'
           'appid=$apiKey'
     );
