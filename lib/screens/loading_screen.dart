@@ -1,8 +1,11 @@
 import 'package:clima/services/location.dart';
 import 'package:clima/services/networking.dart';
 import 'package:flutter/material.dart';
+import 'package:clima/screens/location_screen.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:clima/utilities/config.dart';
 
-const apiKey = 'c672bd1a234c427255af727c3375e9bc';
+const apiKey = weatherApiKey;
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -43,17 +46,19 @@ class _LoadingScreenState extends State<LoadingScreen> {
     print('temp = $temp');
     print('id = $id');
     print('city = $city');
+    
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return LocationScreen();
+    }));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            getLocation();
-          },
-          child: const Text('Get Location')
+        child: SpinKitDoubleBounce(
+          color: Colors.white,
+          size: 100,
         ),
       ),
     );
