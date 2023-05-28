@@ -29,12 +29,14 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   void updateUI(dynamic weatherData) {
-    cityName = weatherData['name'];
-    temp = weatherData['main']['temp'].toInt() - 273;
-    weather = weatherData['weather'][0]['main'];
-    icon = weatherData['weather'][0]['icon'];
-    weatherDescription = weatherData['weather'][0]['description'];
-    weatherMessage = weatherModel.getMessage(temp);
+    setState(() {
+      cityName = weatherData['name'];
+      temp = weatherData['main']['temp'].toInt() - 273;
+      weather = weatherData['weather'][0]['main'];
+      icon = weatherData['weather'][0]['icon'];
+      weatherDescription = weatherData['weather'][0]['description'];
+      weatherMessage = weatherModel.getMessage(temp);
+    });
   }
 
   @override
@@ -57,6 +59,16 @@ class _LocationScreenState extends State<LocationScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              TextButton(
+                onPressed: () async {
+                  var weatherData = await weatherModel.getWeatherData();
+                  updateUI(weatherData);
+                }, 
+                child: const Icon(
+                  Icons.near_me,
+                  size: 25,
+                )
+              ),
               Container(
                 margin: const EdgeInsetsDirectional.only(top: 100),
                 child: Text(
@@ -85,8 +97,7 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                   ),
                   Image.asset(
-                    'images/weather_icons/'
-                      '$icon@2x.png',
+                    'images/weather_icons/$icon@2x.png',
                     scale: 3,
                   )
                 ]
@@ -100,7 +111,7 @@ class _LocationScreenState extends State<LocationScreen> {
               Container(
                 margin: const EdgeInsetsDirectional.only(top: 200),
                 child: Text(
-                  weatherMessage,
+                  '$weatherMessage in $cityName',
                   style: const TextStyle(
                     fontSize: 20
                   ),
