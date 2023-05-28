@@ -1,3 +1,4 @@
+import 'package:clima/services/weather.dart';
 import 'package:flutter/material.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -13,6 +14,28 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  WeatherModel weatherModel = WeatherModel();
+  late String cityName;
+  late int temp;
+  late String weather;
+  late String icon;
+  late String weatherDescription;
+  late String weatherMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    updateUI(widget.data);
+  }
+
+  void updateUI(dynamic weatherData) {
+    cityName = weatherData['name'];
+    temp = weatherData['main']['temp'].toInt() - 273;
+    weather = weatherData['weather'][0]['main'];
+    icon = weatherData['weather'][0]['icon'];
+    weatherDescription = weatherData['weather'][0]['description'];
+    weatherMessage = weatherModel.getMessage(temp);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +43,9 @@ class _LocationScreenState extends State<LocationScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: const AssetImage('images/location_background.jpg'),
+            image: const AssetImage(
+              'images/background_images/location_background.jpg'
+            ),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
               Colors.white.withOpacity(0.8), BlendMode.dstATop
@@ -35,25 +60,50 @@ class _LocationScreenState extends State<LocationScreen> {
               Container(
                 margin: const EdgeInsetsDirectional.only(top: 100),
                 child: Text(
-                  widget.data['name'],
+                  cityName,
                   style: const TextStyle(
-                      fontSize: 30
+                    fontSize: 30
                   ),
                 ),
               ),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: 5),
                 child: Text(
-                  '${(widget.data['main']['temp'] - 273.15).floor()}\u2103',
+                  '$temp\u2103',
                   style: const TextStyle(
-                      fontSize: 70
+                    fontSize: 70
                   ),
                 ),
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '$weather ',
+                    style: const TextStyle(
+                      fontSize: 20
+                    ),
+                  ),
+                  Image.asset(
+                    'images/weather_icons/'
+                      '$icon@2x.png',
+                    scale: 3,
+                  )
+                ]
+              ),
               Text(
-                '${widget.data['weather'][0]['main']}',
+                weatherDescription,
                 style: const TextStyle(
+                  fontSize: 13
+                ),
+              ),
+              Container(
+                margin: const EdgeInsetsDirectional.only(top: 200),
+                child: Text(
+                  weatherMessage,
+                  style: const TextStyle(
                     fontSize: 20
+                  ),
                 ),
               )
             ],
