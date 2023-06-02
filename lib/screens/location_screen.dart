@@ -32,7 +32,7 @@ class _LocationScreenState extends State<LocationScreen> {
   void updateUI(dynamic weatherData) {
     setState(() {
       cityName = weatherData['name'];
-      temp = weatherData['main']['temp'].toInt() - 273;
+      temp = weatherData['main']['temp'].toInt();
       weather = weatherData['weather'][0]['main'];
       icon = weatherData['weather'][0]['icon'];
       weatherDescription = weatherData['weather'][0]['description'];
@@ -103,7 +103,7 @@ class _LocationScreenState extends State<LocationScreen> {
                     child: Text(
                       cityName,
                       style: const TextStyle(
-                          fontSize: 30
+                        fontSize: 30
                       ),
                     ),
                   ),
@@ -112,29 +112,29 @@ class _LocationScreenState extends State<LocationScreen> {
                     child: Text(
                       '$temp\u2103',
                       style: const TextStyle(
-                          fontSize: 70
+                        fontSize: 70
                       ),
                     ),
                   ),
                   Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '$weather ',
-                          style: const TextStyle(
-                              fontSize: 20
-                          ),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '$weather ',
+                        style: const TextStyle(
+                          fontSize: 20
                         ),
-                        Image.asset(
-                          'images/weather_icons/$icon@2x.png',
-                          scale: 3,
-                        )
-                      ]
+                      ),
+                      Image.asset(
+                        'images/weather_icons/$icon@2x.png',
+                        scale: 3,
+                      )
+                    ]
                   ),
                   Text(
                     weatherDescription,
                     style: const TextStyle(
-                        fontSize: 13
+                      fontSize: 13
                     ),
                   ),
                   Container(
@@ -142,7 +142,7 @@ class _LocationScreenState extends State<LocationScreen> {
                     child: Text(
                       '$weatherMessage in $cityName',
                       style: const TextStyle(
-                          fontSize: 20
+                        fontSize: 20
                       ),
                     ),
                   )
