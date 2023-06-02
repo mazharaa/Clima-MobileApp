@@ -9,6 +9,8 @@ class CityScreen extends StatefulWidget {
 }
 
 class _CityScreenState extends State<CityScreen> {
+  late String cityName;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,13 +39,16 @@ class _CityScreenState extends State<CityScreen> {
                   )
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 width: 370,
                 child: TextField(
                   decoration: kTextFieldInputDecoration,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black
                   ),
+                  onChanged: (value) {
+                    cityName = value;
+                  },
                 ),
               ),
               const SizedBox(
@@ -51,7 +56,7 @@ class _CityScreenState extends State<CityScreen> {
               ),
               ElevatedButton(
                 onPressed: () {
-
+                  Navigator.pop(context, cityName);
                 },
                 child: const Text('Get Weather')
               )

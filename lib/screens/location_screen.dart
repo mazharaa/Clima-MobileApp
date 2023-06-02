@@ -57,85 +57,96 @@ class _LocationScreenState extends State<LocationScreen> {
         ),
         constraints: const BoxConstraints.expand(),
         child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: ListView(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TextButton(
-                      onPressed: () async {
-                        var weatherData = await weatherModel.getWeatherData();
-                        updateUI(weatherData);
-                      },
-                      child: const Icon(
-                        Icons.near_me,
-                        size: 25,
-                        color: Colors.white,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () async {
+                          var weatherData = await weatherModel.getWeatherData();
+                          updateUI(weatherData);
+                        },
+                        child: const Icon(
+                          Icons.near_me,
+                          size: 25,
+                          color: Colors.white,
+                        )
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          var typedName = await Navigator
+                            .push(context, MaterialPageRoute(builder: (context) {
+                              return const CityScreen();
+                            }
+                          ));
+
+                          if(typedName != null) {
+                            var data = await weatherModel
+                              .getCityWeather(typedName);
+                            updateUI(data);
+                          }
+                        },
+                        child: const Icon(
+                          Icons.location_city,
+                          size: 25,
+                          color: Colors.white,
+                        )
                       )
+                    ]
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return const CityScreen();
-                      }
-                      ));
-                    },
-                    child: const Icon(
-                      Icons.location_city,
-                      size: 25,
-                      color: Colors.white,
-                    )
-                  )
-                ]
-              ),
-              Container(
-                margin: const EdgeInsetsDirectional.only(top: 100),
-                child: Text(
-                  cityName,
-                  style: const TextStyle(
-                    fontSize: 30
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 5),
-                child: Text(
-                  '$temp\u2103',
-                  style: const TextStyle(
-                    fontSize: 70
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '$weather ',
-                    style: const TextStyle(
-                      fontSize: 20
+                  Container(
+                    margin: const EdgeInsetsDirectional.only(top: 100),
+                    child: Text(
+                      cityName,
+                      style: const TextStyle(
+                          fontSize: 30
+                      ),
                     ),
                   ),
-                  Image.asset(
-                    'images/weather_icons/$icon@2x.png',
-                    scale: 3,
-                  )
-                ]
-              ),
-              Text(
-                weatherDescription,
-                style: const TextStyle(
-                  fontSize: 13
-                ),
-              ),
-              Container(
-                margin: const EdgeInsetsDirectional.only(top: 200),
-                child: Text(
-                  '$weatherMessage in $cityName',
-                  style: const TextStyle(
-                    fontSize: 20
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    child: Text(
+                      '$temp\u2103',
+                      style: const TextStyle(
+                          fontSize: 70
+                      ),
+                    ),
                   ),
-                ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '$weather ',
+                          style: const TextStyle(
+                              fontSize: 20
+                          ),
+                        ),
+                        Image.asset(
+                          'images/weather_icons/$icon@2x.png',
+                          scale: 3,
+                        )
+                      ]
+                  ),
+                  Text(
+                    weatherDescription,
+                    style: const TextStyle(
+                        fontSize: 13
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsetsDirectional.only(top: 200),
+                    child: Text(
+                      '$weatherMessage in $cityName',
+                      style: const TextStyle(
+                          fontSize: 20
+                      ),
+                    ),
+                  )
+                ],
               )
             ],
           )
